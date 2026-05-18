@@ -51,7 +51,9 @@ export const createTicketSchema = z.object({
         message: "Дедлайн не может быть в прошлом",
       }
   ),
-  authorId: z.string()
+  authorId: z
+    .string()
+    .optional()
 });
 
 export type CreateTicketFormData = z.infer<typeof createTicketSchema>;
