@@ -1,5 +1,3 @@
-// StatusSelector.tsx
-import { useState } from "react";
 import type { TicketStatus, UserRole } from "../entities/model/types";
 
 // Карта разрешенных переходов - СТРОГО по правилам
