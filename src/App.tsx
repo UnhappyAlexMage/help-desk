@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Outlet, useNavigation } from 'react-router'
 
 import Header from './components/Header';
@@ -5,12 +6,23 @@ import Footer from './components/Footer';
 
 import './App.css'
 
+interface UserData {
+    id: string;
+    role: string;
+    fullName: string;
+};
+
 export default function App() {
   const navigation = useNavigation();
+  const [activeUser, setActiveUser] = useState<UserData | null>(null);
+
+  const handleUserChange = (userData: UserData) => {
+    setActiveUser(userData);
+  };
 
   return (
     <div className="min-h-screen min-w-screen flex flex-col bg-gray-50 ">
-      <Header />
+      <Header onUserChange={handleUserChange}/>
       <main className='flex-1'>
         {navigation.state === 'loading' ? (
           <div className="flex items-center justify-center">
@@ -20,7 +32,7 @@ export default function App() {
             </div>
           </div>
         ) : (
-          <Outlet />
+          <Outlet context={{ activeUser }} />
         )}
       </main>
       <Footer />
