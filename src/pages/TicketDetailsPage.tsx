@@ -108,11 +108,9 @@ export default function TicketDetailsPage() {
                         <div className="border-t border-gray-400"></div>
                         <section className="bg-gray-100 rounded-lg pl-4 overflow-hidden" style={{ height: '25%' }}>
                             <div className="h-full overflow-y-auto text-black text-xl font-bold">История изменений:
-                                <p className="text-gray-500 font-bold text-xl">8585858585</p>
-                                <p className="text-gray-500 font-bold text-xl">8585858585</p>
-                                <p className="text-gray-500 font-bold text-xl">8585858585</p>
-                                <p className="text-gray-500 font-bold text-xl">8585858585</p>
-                                <p className="text-gray-500 font-bold text-xl">8585858585</p>
+                                <p className="text-gray-500 font-bold text-xl">In process...</p>
+                                <p className="text-gray-500 font-bold text-xl">In process...</p>
+                                <p className="text-gray-500 font-bold text-xl">In process...</p>
                             </div>
                         </section>
                     </div>
