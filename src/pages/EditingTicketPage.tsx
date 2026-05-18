@@ -2,11 +2,23 @@ import { useNavigate, useParams } from "react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useOutletContext } from "react-router";
 
 import { editingTicketSchema, type editingTicketFromData } from "../shared/validators/editingTicket.schema.ts";
 import type { Ticket } from "../entities/model/types.ts";
+import { getAvailableStatuses } from "../shared/lib/ticketStatus.ts";
+
+interface OutletContextType {
+  activeUser: {
+    id: string;
+    role: string;
+    fullName: string;
+  } | null;
+};
 
 export default function EditingTicketPage() {
+    const { activeUser } = useOutletContext<OutletContextType>();
+
     const { ticketId } = useParams();
     const queryClient = useQueryClient();
     const navigate = useNavigate();
@@ -79,7 +91,10 @@ export default function EditingTicketPage() {
             console.error("Ошибка мутации:", error);
         }
     });
+    
+    const availableStatuses = ticket ? getAvailableStatuses(ticket.status) : [];
 
+    const isAdmin = activeUser?.role === "admin";
 
     if(isLoading) { return <div className="text-black-700">Происходит загрузка выбранной заявки...</div> };
     if(isError ) { return <div className="text-red-700">Произошла ошибка при загрузке заявки...</div> };
@@ -133,11 +148,16 @@ export default function EditingTicketPage() {
                             {...register("status")}
                             className="w-full h-10 border bg-white border-gray-300 rounded-md shadow-sm text-gray-700 cursor-pointer"
                         > 
-                            <option value="new">Выбрать: new</option>
-                            <option value="in_progress">Выбрать: in_progress</option>
-                            <option value="waiting_for_user">Выбрать: waiting_for_user</option>
-                            <option value="resolved">Выбрать: resolved</option>
-                            <option value="closed">Выбрать: closed</option>
+                            {availableStatuses.map(
+                                (status) => (
+                                    <option
+                                        key={status}
+                                        value={status}
+                                    >
+                                        {status}
+                                    </option>
+                                )
+                            )}
                         </select>
                     </div>
                     <div>
@@ -148,7 +168,7 @@ export default function EditingTicketPage() {
                             {...register("priority")}
                             className="w-full h-10 border bg-white border-gray-300 rounded-md shadow-sm text-gray-700 cursor-pointer"
                         >
-                            {/* <option value="">Выбранный приоритет: {ticket.priority}</option> */}
+                        <option value="">Выбранный приоритет: {ticket?.priority}</option>
                             <option value="low">Выбрать: Low</option>
                             <option value="medium">Выбрать: Medium</option>
                             <option value="high">Выбрать: High</option>
@@ -159,15 +179,23 @@ export default function EditingTicketPage() {
                         <label className="block mb-2 text-lg font-medium text-black">
                             Измените Исполнителя
                         </label>
-                        <select
-                            {...register("assigneeId")}
-                            className="w-full h-10 border bg-white border-gray-300 rounded-md shadow-sm text-gray-700 cursor-pointer"
-                        >   
-                            <option value="">Выберите исполнителя: </option>
-                            <option value="user1">Выбрать: Иван Петров</option>
-                            <option value="user2">Выбрать: Мария Сидорова</option>
-                            <option value="user3">Выбрать: Алексей Иванов</option>
-                        </select>
+                        {isAdmin ? (
+                            <select
+                                {...register("assigneeId")}
+                                className="w-full h-10 border bg-white border-gray-300 rounded-md shadow-sm text-gray-700 cursor-pointer p-2"
+                            >
+                                <option value="">Назначить саппорта: Мария Смирнова</option>
+                                
+                            </select>
+                        ) : (
+                            <select
+                                disabled
+                                className="w-full h-10 border bg-gray-100 border-gray-300 rounded-md shadow-sm text-gray-400 cursor-not-allowed p-2"
+                                value=""
+                            >
+                                <option value="">Изменение исполнителя недоступно</option>
+                            </select>
+                        )}
                     </div>
                     <div>
                         <label className="block mb-2 text-lg font-medium text-black">
