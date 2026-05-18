@@ -20,7 +20,6 @@ export default function TicketsPage() {
     order: null,
   });
 
-
   const [filters, setFilters] = useState<TicketFilters>({
       status: "",
       priority: "",
@@ -188,7 +187,6 @@ export default function TicketsPage() {
         search={filters.search}
         setSearch={(value) => handleFilterChange("search", value)}
       />
-      {/* Сама таблица данных */}
       <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-x-auto">
         <table className="w-full table-auto border-collapse">
           <thead>
