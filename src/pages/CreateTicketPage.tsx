@@ -19,6 +19,7 @@ export default function CreateTicketPage() {
     });
 
     const mutation = useMutation({ mutationFn: async ( data: CreateTicketFormData ) => {
+
         const response = await fetch("/api/tickets",
             {
             method: "POST",
@@ -26,9 +27,9 @@ export default function CreateTicketPage() {
                 "Content-Type":
                 "application/json",
             },
-            body: JSON.stringify({...data, authorId: currentUser?.id }),
-
+            body: JSON.stringify({ ...data, authorId: currentUser?.id }),
             }
+            
         );
 
         if (!response.ok) {
@@ -36,6 +37,10 @@ export default function CreateTicketPage() {
         }
 
         return response.json();
+        },
+
+        onError: (error) => {
+            console.error("Ошибка мутации:", error);
         },
 
         onSuccess: () => {
@@ -187,14 +192,14 @@ export default function CreateTicketPage() {
                     type="button"
                     onClick={() => navigate("/")}
                     disabled={mutation.isPending}
-                    className="px-4 py-2 bg-gray-300 text-black rounded-lg disabled:opacity-50 mr-2 border border-black"
+                    className="px-4 py-2 bg-gray-300 text-black rounded-lg disabled:opacity-50 mr-2 border border-black cursor-pointer"
                 >
                     Перейти к заявкам
                 </button>
                 <button
                     type="submit"
                     disabled={mutation.isPending}
-                    className="px-4 py-2 bg-black text-white rounded-lg disabled:opacity-50"
+                    className="px-4 py-2 bg-black text-white rounded-lg disabled:opacity-50 cursor-pointer"
                 >
                     {mutation.isPending ? "Создание..." : "Создать заявку"}
                 </button>
