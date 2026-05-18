@@ -95,7 +95,7 @@ export const handlerCreateTicket = http.post( "/api/tickets", async ({ request }
         status: "new",
         priority: body.priority ?? "low",
         category: body.category ?? "",
-        authorId: "body.authorId",
+        authorId: body.authorId ?? "",
         assigneeId: "",
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
