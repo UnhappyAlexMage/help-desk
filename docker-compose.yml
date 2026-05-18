@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - VITE_ENABLE_MOCKS=true
+    ports:
+      - "5173:80"
+    restart: unless-stopped

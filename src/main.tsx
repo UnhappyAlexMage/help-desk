@@ -12,7 +12,7 @@ import { UserProvider } from './providers/RoleContext.tsx';
 import './index.css';
 
 async function enableMocking() {
-  if (import.meta.env.DEV) {
+  if (import.meta.env.DEV || import.meta.env.VITE_ENABLE_MOCKS === 'true') {
     const { worker } = await import('./mock/browser.ts')
     await worker.start({onUnhandledRequest: 'bypass'})
     console.log('MSW worker запущен');
