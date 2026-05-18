@@ -20,6 +20,8 @@ export default function CreateTicketPage() {
 
     const mutation = useMutation({ mutationFn: async ( data: CreateTicketFormData ) => {
 
+        const requestBody = { ...data, authorId: currentUser?.id }
+
         const response = await fetch("/api/tickets",
             {
             method: "POST",
@@ -27,7 +29,7 @@ export default function CreateTicketPage() {
                 "Content-Type":
                 "application/json",
             },
-            body: JSON.stringify({ ...data, authorId: currentUser?.id }),
+            body: JSON.stringify(requestBody),
             }
             
         );
@@ -38,7 +40,7 @@ export default function CreateTicketPage() {
 
         return response.json();
         },
-
+        
         onError: (error) => {
             console.error("Ошибка мутации:", error);
         },
@@ -57,7 +59,7 @@ export default function CreateTicketPage() {
                 Создание заявки
             </h1>
             <form
-                onSubmit={handleSubmit((data) => mutation.mutate(data))}
+                onSubmit={handleSubmit((data) => { mutation.mutate(data); })}
                 className="m-4"
             >
                 <div>
