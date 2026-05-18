@@ -22,11 +22,11 @@ async function enableMocking() {
 enableMocking().then(() => 
   {createRoot(document.getElementById('root')!).render(
     <StrictMode>
-      <QueryClientProvider client={queryClient}>
-        <UserProvider>
-          <RouterProvider router={router}/>
-        </UserProvider>
-      </QueryClientProvider>
+      <UserProvider>
+        <QueryClientProvider client={queryClient}>
+            <RouterProvider router={router}/>
+        </QueryClientProvider>
+      </UserProvider>
     </StrictMode>,
   )
 });
