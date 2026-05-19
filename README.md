@@ -1,75 +1,489 @@
-# React + TypeScript + Vite
+# Help Desk System
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Проект реализован как Frontend-приложение с использованием MSW для эмуляции backend API и построен с упором на архитектуру, масштабируемость и бизнес-логику.
 
-Currently, two official plugins are available:
+---
+# 1. Как запустить прооект:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Локальный запуск
 
-## React Compiler
+Чтобы запустить проект локально, выполните следующие команды в директории `help-desk`:
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+```bash
+# Установка зависимостей:
+npm install
 
-Note: This will impact Vite dev & build performances.
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+# Запуск dev-сервера:
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+После запуска приложение будет доступно по адресу:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```txt
+http://localhost:5173
 ```
+### Отсановка проекта:
+```txt
+Ctrl + C
+```
+
+# 2. Используемый стек:
+
+## Frontend:
+
+- React
+- TypeScript
+- Vite
+- React Router
+- TanStack Query
+- React Hook Form + Zod
+- TailwindCSS
+
+---
+
+## Mock Backend
+
+- MSW (Mock Service Worker)
+
+---
+
+## DevOps
+
+- Docker
+- Docker Compose
+
+---
+
+---
+
+# 3. Описание архитектуры:
+
+```bash
+src/
+├── api/              # Слой работы с API.
+├── assets/           # Статические ресурсы приложения.
+├── components/       # Переиспользуемые UI-компоненты.
+├── entities/         # Бизнес-сущности и типы приложения.
+├── hooks/            # Кастомные React hooks: дребезг для поиска и получение роли
+├── mock/             # Mock backend на базе mock data, MSW: handlers, fake API endpoints
+├── pages/            # Страницы приложения: основные блоки для использования в routes
+├── providers/        # Глобальный providers приложения.
+├── routes/           # Конфигурация маршрутизации приложения: React Router routes, lazy loading, protected routes, error boundaries.
+├── shared/           # Общие утилиты и переиспользуемая логика: lib/ ("Псевдо-коллекици библиотек" для корректного отображения данных), ui/ (Переиспользуемые компоненты), validators/ (Для валидации данных).
+```
+
+---
+
+# 4. Реализованный функционал:
+
+## Реализованные пункты описаны ниже:
+
+- **1. Цель задания**.
+- **2. Описание задачи**.
+- **3. Основные сущности**.
+- **4.1. Авторизация через выбор пользователя**.
+- **4.2. Список заявок**.
+- **4.3. Карточка заявки**.
+- **4.4. Создание заявки**.
+- **4.6. Правила изменения статусов**.
+- **4.7. Назначение исполнителя**.
+- **4.8. Комментариия**.
+
+- **4.9. История изменений: не полный функционал**.
+
+Ниже идет более подроюное описание функционала ↓
+
+## Выбор пользователя и role-based логика
+
+Реализован выбор текущего пользователя через `Header`.
+
+Поддерживаются роли:
+
+- employee
+- support
+- admin
+
+Интерфейс приложения изменяется в зависимости от выбранной роли пользователя.
+
+---
+
+## Таблица заявок
+
+Реализована страница со списком заявок в виде таблицы.
+
+В таблице отображаются:
+
+- название заявки;
+- статус;
+- приоритет;
+- категория;
+- автор;
+- исполнитель;
+- дата создания;
+- дедлайн.
+
+---
+
+## Поиск заявок
+
+Реализован поиск по:
+
+- названию заявки;
+- описанию заявки.
+
+Поиск работает с использованием `debounce`.
+
+---
+
+## Фильтрация заявок
+
+Поддерживается фильтрация заявок:
+
+- по статусу;
+- по приоритету;
+- по категории;
+- по исполнителю.
+
+---
+
+## Сортировка заявок
+
+Реализована сортировка:
+
+- по приоритету;
+- по дате создания;
+- по дедлайну.
+
+---
+
+## Карточка заявки
+
+Реализована отдельная страница заявки:
+
+```txt
+/tickets/:ticketId
+```
+
+Карточка содержит:
+
+- полную информацию о заявке;
+- комментарии;
+- информацию об авторе;
+- информацию об исполнителе;
+- статус и приоритет;
+- даты создания и обновления.
+
+---
+
+## Создание заявки
+
+Реализована форма создания заявки с использованием:
+
+- React Hook Form;
+- Zod validation;
+- TanStack Query mutations.
+
+Поддерживается:
+
+- валидация полей;
+- создание заявки через MSW API;
+- автоматическое обновление таблицы после создания.
+
+---
+
+## Редактирование заявки
+
+Реализована форма редактирования заявки.
+
+Поддерживается:
+
+- изменение статуса;
+- изменение приоритета;
+- изменение категории;
+- изменение исполнителя;
+- PATCH обновление через MSW.
+
+---
+
+## Комментарии
+
+Реализована полноценная система комментариев.
+
+Поддерживается:
+
+- загрузка комментариев;
+- создание комментариев;
+- отображение автора комментария;
+- отображение даты создания;
+- обновление комментариев без перезагрузки страницы.
+
+---
+
+## Ограничение переходов статусов
+
+Реализована бизнес-логика допустимых переходов статусов.
+
+Недоступные переходы скрываются из интерфейса.
+
+Поддерживаемые переходы:
+
+```txt
+new -> in_progress
+in_progress -> waiting_for_user
+waiting_for_user -> in_progress
+in_progress -> resolved
+resolved -> closed
+resolved -> in_progress
+```
+
+---
+
+## Назначение исполнителя
+
+Только пользователь с ролью `admin` может назначать исполнителя.
+
+Исполнителем может быть только пользователь с ролью:
+
+```txt
+support
+```
+
+---
+
+## Работа с query params
+
+Реализована работа с query parameters:
+
+Поддерживается:
+
+- фильтрация;
+- сортировка;
+- поиск.
+
+---
+
+## Mock API через MSW
+
+Вместо backend реализован полноценный mock API через:
+
+```txt
+MSW (Mock Service Worker)
+```
+
+Поддерживаются:
+
+- GET requests;
+- POST requests;
+- PATCH requests;
+- query params;
+- mock database in-memory.
+
+---
+
+## Работа с серверным состоянием
+
+Используется:
+
+```txt
+TanStack Query
+```
+
+Реализованы:
+
+- queries;
+- mutations;
+- invalidateQueries;
+- кеширование;
+- обновление данных без перезагрузки.
+
+---
+
+## Docker support
+
+Проект полностью контейнеризирован.
+
+Поддерживается запуск через:
+
+```bash
+docker compose up --build
+```
+
+---
+
+# 5. Что не успел сделать:
+
+- Не успел полностью реализовать пункт **4.5. Редактирование заявки**.
+
+- Не успел корректно реализовать пункт **4.9. История изменений**, а именно: чтобы история **обновлялась** при изменении статуса, приоритета и исполнителя.
+
+---
+
+# 6. Что бы улучшил при дальнейшем развитии:
+
+## 1. Полноценный backend
+
+Перевести проект с `MSW` на полноценный backend с использованием:
+
+- Node.js
+- Express.js
+- PostgreSQL
+
+Это позволило бы реализовать:
+
+- логику работы данных в интерфейса
+- корректную логику в работе с эндпоинтами
+- постоянное хранение данных;
+- настоящую систему авторизации;
+- работу с базой данных;
+- корректную работу с запросами.
+
+---
+
+## 2. JWT авторизация и защищённые маршруты
+
+Добавить полноценную auth-систему:
+
+- JWT access tokens
+- refresh tokens
+- protected routes
+- role permissions
+- middleware для проверки ролей
+
+---
+
+## 3. Улучшение системы ролей и permissions
+
+Сейчас роли используются только на уровне интерфейса.
+
+В дальнейшем стоило бы реализовать:
+
+- granular permissions;
+- backend validation ролей;
+- ограничения на уровне API;
+- RBAC (Role-Based Access Control).
+
+---
+
+## 4. Улучшение UX/UI
+
+Добавить:
+
+- пагинация;
+- skeleton для загрузок;
+- optimistic updates;
+- адаптивный дизайн;
+- drag & drop для заявок.
+
+---
+
+## 5. Тестирование
+
+Добавить полноценное тестирование приложения:
+
+- Unit-тесты
+- React Testing Library
+
+Покрыть:
+
+- бизнес-логику;
+- формы;
+- API-запросы;
+- routing;
+- role-based сценарии.
+
+
+## 6. Улучшение архитектуры API
+
+Реализовать:
+
+- DTO layer;
+- API client abstraction;
+- service layer;
+- repository pattern;
+- централизованную обработку ошибок.
+
+
+## 7. Улучшение архитектуры проекта
+
+Реализовать:
+
+- Добавить окружение .env для dev;
+- Вынести все пути изпользуемые для API в отдельные константы;
+- Вынести всю работу функция API в отдельные файлы;
+- Разбить компоненты pages/ на более простые части других переиспользуемых компонентов
+- Добавление работы с Storybook
+
+---
+
+# 7. Какие компромиссы были приняты:
+
+## 1. Использование MSW вместо backend
+
+Для ускорения разработки и фокусировки на Frontend-архитектуре был использован `MSW (Mock Service Worker)` вместо полноценного backend.
+
+Это позволило:
+
+- быстрее разрабатывать UI;
+- сосредоточиться на бизнес-логике;
+- работать с mock API как с настоящим REST API.
+
+---
+
+## 2. Отсутствие базы данных
+
+Все данные хранятся `in-memory`. После перезапуска приложения все созданные заявки, комментарии и изменения сбрасываются.
+
+---
+
+## 3. Простая система авторизации
+
+Вместо полноценной системы авторизации используется выбор пользователя через UI. Это решение было принято для упрощения разработки и фокусировки на role-based логике интерфейса.
+
+---
+
+## 4. Отсутствие глобального state manager
+
+`Redux` / `Zustand` не использовались.
+
+Вместо этого применялись:
+- React Context
+- TanStack Query
+
+---
+
+## 8. Как запустить проект через Docker: 
+
+### Интерактивный режим:
+Запуск контейнера с пересборкой образа и выводом логов в терминал:
+
+```bash
+docker compose up --build
+```
+
+### Для остановки нажмите сочетание клавиш:
+```txt
+Ctrl + C
+```
+
+### Фоновый режим (detached):
+
+Чтобы запустить в detached режиме совместно с ребилдом, выполните следующую команду:
+```bash
+
+docker compose up -d --build
+```
+
+### Для остановки выполните следующее: Docker Desctop -> Stop Container.
+
+---
+
+# 9. Какие порты использует приложение:
+
+## 🔌 Используемые порты
+
+| Среда                | Порт / Проброс   | Адрес                     |
+|----------------------|------------------|---------------------------|
+| Локальная разработка | `5173`           | `http://localhost:5173`   |
+| Docker               | `5173:80`        | `http://localhost:5173`   |
+
+---
