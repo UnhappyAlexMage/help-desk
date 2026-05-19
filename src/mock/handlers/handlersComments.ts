@@ -18,7 +18,7 @@ export const handlerPostTicketsIdComment = http.post("/api/tickets/:id/comments"
     const newComment = {
         id: `comment-${Date.now()}`,
         ticketId: params.id as string,
-        authorId: body.authorId,
+        authorId: body.authorId ?? "user1",
         text: body.text,
         createdAt: new Date().toISOString(),
     };
