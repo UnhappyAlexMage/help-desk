@@ -9,17 +9,21 @@ import { formatDate } from "../shared/lib/formatDate.ts";
 import type { TicketComment } from "../entities/model/types.ts";
 import { useState } from "react";
 
-export function CommentsSection() {
+interface UserData {
+    activeUser: {
+    id: string;
+    role: string;
+    fullName: string;
+    } | null;
+};
+
+export function CommentsSection( {activeUser} : UserData ) {
     const { ticketId } = useParams();
     const queryClient = useQueryClient();
 
     const [formKey, setFormKey] = useState(0);
 
-    const {
-        data: comments,
-        isLoading,
-        isError,
-    } = useQuery<TicketComment[]>({
+    const { data: comments, isLoading, isError } = useQuery<TicketComment[]>({
         queryKey: ["comments", ticketId],
         queryFn: async () => {
             const response = await fetch(`/api/tickets/${ticketId}/comments`);
@@ -32,7 +36,7 @@ export function CommentsSection() {
         },
     });
 
-    const { register, handleSubmit, formState: { errors }, } = useForm<CommentFormData>({
+    const { register, handleSubmit, reset, formState: { errors }, } = useForm<CommentFormData>({
         resolver: zodResolver(commentSchema),
         defaultValues: { text: ""},
         mode: "onSubmit",
@@ -40,9 +44,7 @@ export function CommentsSection() {
 
 
     const mutation = useMutation({
-        mutationFn: async (
-        data: CommentFormData
-        ) => {
+        mutationFn: async ( data: CommentFormData ) => {
         const response = await fetch(
             `/api/tickets/${ticketId}/comments`,
             {
@@ -55,8 +57,7 @@ export function CommentsSection() {
 
             body: JSON.stringify({
                 text: data.text,
-
-                authorId: "user1",
+                authorId: activeUser?.id,
             }),
             }
         );
@@ -75,14 +76,15 @@ export function CommentsSection() {
             queryKey: [ "comments", ticketId ],
         });
 
-        
+        reset();
         setFormKey(prev => prev + 1);
+
         },
     });
 
 
-    if(isLoading) { return <div className="text-black-700">Происходит загрузка комментариев...</div> };
-    if(isError ) { return <div className="text-red-700">Произошла ошибка при загрузке комментариев...</div> };
+    if(isLoading) { return <div className="text-black-700">Происходит загрузка комментариев... Нажмите Ctrl+R</div> };
+    if(isError ) { return <div className="text-red-700">Произошла ошибка при загрузке комментариев... Нажмите Ctrl+R</div> };
 
     return(
         <section className="bg-white rounded-xl border border-gray-200 p-6">
