@@ -15,15 +15,10 @@ interface HeaderProps {
 
 export default function Header({ onUserChange } : HeaderProps) {
     const { currentUser, setCurrentUser } = useUser();
-    const { data: users, isLoading, error } = useUserRole();
+    const { data: users, isLoading, isError } = useUserRole();
 
-    if (isLoading) {
-        return <div>Загрузка пользователей...</div>;
-    };
-
-    if (error) {
-        return <div>Ошибка при загрузке пользователей</div>;
-    };
+    if (isLoading) { return <div>Загрузка пользователей... Нажмите Ctrl+R</div>};
+    if (isError) { return <div>Ошибка при загрузке пользователей... Нажмите Ctrl+R</div> };
 
     return (
         <header className="bg-gray-300 border-t border-gray-600 " style={{ minHeight: '15vh' }}>
