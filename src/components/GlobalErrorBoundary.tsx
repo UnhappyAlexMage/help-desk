@@ -31,24 +31,24 @@ export default function GlobalErrorBoundary() {
     };
 
     return (
-        <div className="min-h-screen min-w-screen flex items-center justify-center bg-slate-50 p-6 font-sans">
-            <div className="max-w-md w-full bg-white rounded-2xl shadow-xl border border-slate-100 p-8 text-center">
-            <h1 className="text-2xl font-bold text-slate-800 mb-2">
+        <div className="min-h-screen min-w-screen flex items-center justify-center bg-slate-300 p-6 font-sans">
+            <div className="max-w-md w-full bg-white rounded-2xl shadow-xl border border-slate-100 p-8 pt-30 pb-30 text-center">
+            <h6 className="text-3xl font-bold text-slate-800 mb-2">
                 Отработал ErrorBoundary
-            </h1>
+            </h6>
             <p className="text-slate-600 mb-6 text-sm leading-relaxed">
                 {getErrorMessage()}
             </p>
             <div className="flex gap-4">
                 <button
                     onClick={handleReload}
-                    className="flex-1 py-2.5 px-4 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-xl transition shadow-sm"
+                    className="flex-1   bg-slate-100 hover:bg-slate-200 text-black font-medium rounded-xl transition shadow-sm"
                     >
                     Попробовать снова
                 </button>
                 <a
                     onClick={habldeGoHome}
-                    className="flex-1 py-2.5 px-4 bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium rounded-xl transition text-center"
+                    className="flex-1 bg-gray-300 font-medium rounded-xl transition pt-2.5 cursor-pointer"
                     >
                     На главную
                 </a>
