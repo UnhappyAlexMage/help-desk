@@ -36,7 +36,7 @@ export default function EditingTicketPage() {
             return data;
         },
 
-     });
+    });
 
     const { register, handleSubmit, formState: { errors } } = useForm<editingTicketFromData>({
         resolver: zodResolver( editingTicketSchema ),
@@ -96,8 +96,8 @@ export default function EditingTicketPage() {
 
     const isAdmin = activeUser?.role === "admin";
 
-    if(isLoading) { return <div className="text-black-700">Происходит загрузка выбранной заявки...</div> };
-    if(isError ) { return <div className="text-red-700">Произошла ошибка при загрузке заявки...</div> };
+    if(isLoading) { return <div className="text-black-700">Происходит загрузка выбранной заявки... Нажмите Ctrl+R</div> };
+    if(isError ) { return <div className="text-red-700">Произошла ошибка при загрузке заявки... Нажмите Ctrl+R</div> };
 
     return (
         <div className="space-y-6 m-8">
