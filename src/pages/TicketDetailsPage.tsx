@@ -1,15 +1,26 @@
 import { useNavigate, useParams } from "react-router";
 import { useQuery } from "@tanstack/react-query";
+import { useOutletContext } from "react-router";
 
 import InfoRow from "../shared/ui/InfoRow";
 import { getUserNameById } from "../shared/lib/getUserNameById";
 import { formatDate } from "../shared/lib/formatDate";
 import { CommentsSection } from "../components/CommentsSection";
+import TicketHistory from "../components/TicketHistory";
+
+interface OutletContextType {
+  activeUser: {
+    id: string;
+    role: string;
+    fullName: string;
+  } | null;
+};
 
 export default function TicketDetailsPage() {
     const { ticketId } = useParams();
 
     const navigate = useNavigate();
+    const { activeUser } = useOutletContext<OutletContextType>();
 
     const { data: ticket, isLoading, isError } = useQuery({
         queryKey: ["ticket", ticketId],
@@ -26,8 +37,8 @@ export default function TicketDetailsPage() {
 
      });
 
-     if(isLoading) { return <div className="text-black-700">Происходит загрузка выбранной заявки...</div> };
-     if(isError ) { return <div className="text-red-700">Произошла ошибка при загрузке заявки...</div> };
+     if(isLoading) { return <div className="text-black-700">Происходит загрузка выбранной заявки... Нажмите Ctrl+R</div> };
+     if(isError ) { return <div className="text-red-700">Произошла ошибка при загрузке заявки... Нажмите Ctrl+R</div> };
 
      return (
         <div className="space-y-6 m-8">
@@ -99,20 +110,22 @@ export default function TicketDetailsPage() {
                     </div>
                     <div className="w-px bg-gray-300"></div>
                     <div className="w-1/2 flex flex-col gap-4 h-full">
-                        <section className="bg-gray-100  rounded-lg flex-1" style={{ height: '75%' }}>
+                        <article className="bg-gray-100  rounded-lg flex-1" style={{ height: '75%' }}>
                             <div className="h-full overflow-y-auto">
                                 <p className="font-bold text-xl mb-2 text-black">Комментарии:</p>
-                                <CommentsSection />
+                                <CommentsSection 
+                                    activeUser={activeUser}
+                                />
                             </div>
-                        </section>
+                        </article>
                         <div className="border-t border-gray-400"></div>
-                        <section className="bg-gray-100 rounded-lg pl-4 overflow-hidden" style={{ height: '25%' }}>
+                        <article className="bg-gray-100 rounded-lg pl-4 overflow-hidden" style={{ height: '25%' }}>
                             <div className="h-full overflow-y-auto text-black text-xl font-bold">История изменений:
-                                <p className="text-gray-500 font-bold text-xl">In process...</p>
-                                <p className="text-gray-500 font-bold text-xl">In process...</p>
-                                <p className="text-gray-500 font-bold text-xl">In process...</p>
+                                <TicketHistory 
+                                    ticketId={ticket.id}
+                                />
                             </div>
-                        </section>
+                        </article>
                     </div>
                 </div>
             </section>
