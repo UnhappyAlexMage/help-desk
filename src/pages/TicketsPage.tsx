@@ -233,13 +233,13 @@ export default function TicketsPage() {
           <tbody>
             {isLoading && (
               <tr>
-                <td colSpan={9} className="text-center py-8 text-gray-500">Происходит загрузка данных...</td>
+                <td colSpan={9} className="text-center py-8 text-gray-500">Происходит загрузка данных... Нажмите Ctrl+R</td>
               </tr>
             )}
             
             {isError && (
               <tr>
-                <td colSpan={9} className="text-center py-8 text-red-500">Не удалось загрузить данные...</td>
+                <td colSpan={9} className="text-center py-8 text-red-500">Не удалось загрузить данные... Нажмите Ctrl+R</td>
               </tr>
             )}
 
