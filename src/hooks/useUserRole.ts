@@ -7,8 +7,6 @@ import { useUser } from '../providers/RoleContext.tsx';
 export const useUserRole = () => {
     const { currentUser } = useUser();
 
-    console.log(`useUserRole: текущая роль "${currentUser?.role}"`);
-
     return useQuery<User[], Error>({
       queryKey: ["users"],
       queryFn: () => fetchAllUsers(),
