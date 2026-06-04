@@ -3,6 +3,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useOutletContext } from "react-router";
+import toast from "react-hot-toast";
 
 import { editingTicketSchema, type editingTicketFromData } from "../shared/validators/editingTicket.schema.ts";
 import type { Ticket } from "../entities/model/types.ts";
@@ -85,10 +86,15 @@ export default function EditingTicketPage() {
             queryClient.refetchQueries({
                 queryKey: ["tickets"],
             });
-            navigate("/")
+
+            toast.success("Заявка успешна редактирована!");
+            setTimeout(()=> { navigate("/") }, 1000);        
         },
+
         onError: (error) => {
             console.error("Ошибка мутации:", error);
+
+            toast.error("Ошибка редактирования заявки...");
         }
     });
     
