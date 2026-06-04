@@ -2,6 +2,7 @@ import { useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import toast from "react-hot-toast";
 
 import { createTicketSchema, type CreateTicketFormData } from "../shared/validators/createTicket.schema";
 import { useUser } from "../providers/RoleContext";
@@ -43,13 +44,16 @@ export default function CreateTicketPage() {
         
         onError: (error) => {
             console.error("Ошибка мутации:", error);
+
+            toast.error("Не удалось создать заявку!")
         },
 
         onSuccess: () => {
             queryClient.invalidateQueries({
-            queryKey: ["tickets"],
-        });
+                queryKey: ["tickets"],
+            });
 
+            toast.success("Заявка успешно создана");
         },
     });
 
