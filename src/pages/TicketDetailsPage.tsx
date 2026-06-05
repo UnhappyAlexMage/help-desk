@@ -7,6 +7,7 @@ import { getUserNameById } from "../shared/lib/getUserNameById";
 import { formatDate } from "../shared/lib/formatDate";
 import { CommentsSection } from "../components/CommentsSection";
 import TicketHistory from "../components/TicketHistory";
+import { dataTickets } from "../api/constants";
 
 interface OutletContextType {
   activeUser: {
@@ -25,7 +26,7 @@ export default function TicketDetailsPage() {
     const { data: ticket, isLoading, isError } = useQuery({
         queryKey: ["ticket", ticketId],
         queryFn: async () => {
-            const response = await fetch(`/api/tickets/${ticketId}`);
+            const response = await fetch(`${dataTickets}/${ticketId}`);
 
             if(!response.ok) {
                 throw new Error("Ошибка в загрузке заявки");
