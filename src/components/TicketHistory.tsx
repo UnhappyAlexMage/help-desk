@@ -1,7 +1,9 @@
 // components/TicketHistory.tsx
 import { useQuery } from "@tanstack/react-query";
 import { formatDate } from "../shared/lib/formatDate";
+
 import type { TicketHistoryItem } from "../entities/model/types";
+import { dataTickets } from "../api/constants";
 
 type TicketHistoryProps = {
     ticketId: string;
@@ -11,7 +13,7 @@ export default function TicketHistory({ ticketId }: TicketHistoryProps) {
     const { data: history, isLoading, isError } = useQuery<TicketHistoryItem[]>({
         queryKey: ["ticketHistory", ticketId],
         queryFn: async () => {
-            const response = await fetch(`/api/tickets/${ticketId}/history`);
+            const response = await fetch(`${dataTickets}/${ticketId}/history`);
             
             if (!response.ok) {
                 throw new Error("Ошибка загрузки истории изменений");
