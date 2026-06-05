@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 import { editingTicketSchema, type editingTicketFromData } from "../shared/validators/editingTicket.schema.ts";
 import type { Ticket } from "../entities/model/types.ts";
 import { getAvailableStatuses } from "../shared/lib/ticketStatus.ts";
+import { dataTickets } from "../api/constants.ts";
 
 interface OutletContextType {
   activeUser: {
@@ -27,7 +28,7 @@ export default function EditingTicketPage() {
     const { data: ticket, isLoading, isError } = useQuery({
         queryKey: ["ticket", ticketId],
         queryFn: async () => {
-            const response = await fetch(`/api/tickets/${ticketId}`);
+            const response = await fetch(`${dataTickets}/${ticketId}`);
 
             if(!response.ok) {
                 throw new Error("Ошибка в загрузке заявки");
