@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 
 import { createTicketSchema, type CreateTicketFormData } from "../shared/validators/createTicket.schema";
 import { useUser } from "../providers/RoleContext";
+import { dataTickets } from "../api/constants";
 
 export default function CreateTicketPage() {
     const navigate = useNavigate();
@@ -23,7 +24,7 @@ export default function CreateTicketPage() {
 
         const requestBody = { ...data, authorId: currentUser?.id }
 
-        const response = await fetch("/api/tickets",
+        const response = await fetch(dataTickets,
             {
             method: "POST",
             headers: {
