@@ -30,18 +30,14 @@ export default function TicketsPage() {
 
   const debouncedSearch = useDebounceSearch(filters.search, 1000);
 
-  const handleFilterChange = (
-    key: keyof TicketFilters,
-    value: string
-  ) => {
+  const handleFilterChange = ( key: keyof TicketFilters, value: string ) => {
     setFilters((prev) => ({
       ...prev,
       [key]: value,
     }));
   };
 
-    const handleSort = (field: SortField) => {
-    setSorting((prev) => {
+    const handleSort = (field: SortField) => { setSorting((prev) => {
       if (prev.field !== field) {
         return {
           field,
