@@ -10,9 +10,7 @@ import { dataTickets } from "../api/constants";
 
 export default function CreateTicketPage() {
     const navigate = useNavigate();
-
     const queryClient = useQueryClient();
-
     const { currentUser } = useUser();
 
     const { register, handleSubmit, formState: { errors } } = useForm<CreateTicketFormData>({
@@ -21,7 +19,6 @@ export default function CreateTicketPage() {
     });
 
     const mutation = useMutation({ mutationFn: async ( data: CreateTicketFormData ) => {
-
         const requestBody = { ...data, authorId: currentUser?.id }
 
         const response = await fetch(dataTickets,
