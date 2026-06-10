@@ -9,6 +9,7 @@ import { editingTicketSchema, type editingTicketFromData } from "../shared/valid
 import type { Ticket } from "../entities/model/types.ts";
 import { getAvailableStatuses } from "../shared/lib/ticketStatus.ts";
 import { dataTickets } from "../api/constants.ts";
+import { queryKeys } from "../api/queryKeys.ts";
 
 interface OutletContextType {
   activeUser: {
@@ -20,13 +21,12 @@ interface OutletContextType {
 
 export default function EditingTicketPage() {
     const { activeUser } = useOutletContext<OutletContextType>();
-
     const { ticketId } = useParams();
     const queryClient = useQueryClient();
     const navigate = useNavigate();
 
     const { data: ticket, isLoading, isError } = useQuery({
-        queryKey: ["ticket", ticketId],
+        queryKey: queryKeys.tickets.detail(ticketId),
         queryFn: async () => {
             const response = await fetch(`${dataTickets}/${ticketId}`);
 
@@ -58,7 +58,7 @@ export default function EditingTicketPage() {
     });
 
     const mutation = useMutation({ mutationFn: async( data: editingTicketFromData ) => {
-        const response = await fetch(`/api/tickets/${ticketId}`, 
+        const response = await fetch(`${dataTickets}/${ticketId}`,
             {
                 method: "PATCH",
                 headers: {
@@ -77,15 +77,15 @@ export default function EditingTicketPage() {
 
         onSuccess: () => {
             queryClient.invalidateQueries({
-                queryKey: [ "tickets" ],
+                queryKey: queryKeys.tickets.all,
             });
 
             queryClient.invalidateQueries({
-                queryKey: [ "ticket", ticketId ],
+                queryKey: queryKeys.tickets.detail(ticketId),
             });
 
             queryClient.refetchQueries({
-                queryKey: ["tickets"],
+                queryKey: queryKeys.tickets.all,
             });
 
             toast.success("Заявка успешна редактирована!");
@@ -94,7 +94,6 @@ export default function EditingTicketPage() {
 
         onError: (error) => {
             console.error("Ошибка мутации:", error);
-
             toast.error("Ошибка редактирования заявки...");
         }
     });
