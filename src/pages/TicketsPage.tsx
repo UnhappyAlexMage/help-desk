@@ -9,9 +9,14 @@ import type { TicketFilters, SortField, TicketSorting } from "../entities/model/
 import FilterSelect from "../shared/ui/FilterSelect";
 import TableHeader from "../shared/ui/TableHeader";
 import { InputSeacrhTickets } from "../shared/ui/InputSearchTickets";
-import { getUserNameById } from "../shared/lib/getUserNameById";
+
 import { useDebounceSearch } from "../hooks/useDebounceSearch";
+
+import { getUserNameById } from "../shared/lib/getUserNameById";
 import { formatDate } from "../shared/lib/formatDate";
+
+import { dataTickets } from "../api/constants";
+import { queryKeys } from "../api/queryKeys";
 
 export default function TicketsPage() {
 
@@ -30,8 +35,7 @@ export default function TicketsPage() {
 
   const debouncedSearch = useDebounceSearch(filters.search, 1000);
 
-  const handleFilterChange = ( key: keyof TicketFilters, value: string ) => {
-    setFilters((prev) => ({
+  const handleFilterChange = ( key: keyof TicketFilters, value: string ) => { setFilters((prev) => ({
       ...prev,
       [key]: value,
     }));
@@ -61,28 +65,25 @@ export default function TicketsPage() {
 
   const { data: tickets, isLoading, isError } = useQuery<Ticket[]>({
     queryKey: [
-      "tickets",
+      queryKeys.tickets.all,
       {
         ...filters,
         search: debouncedSearch
       },
       sorting,
     ],
+
     queryFn: async () => {
       const params = createTicketSearchParams();
-
-      const response = await fetch(
-        `/api/tickets?${params}`
-      );
+      const response = await fetch(`${dataTickets}?${params}`);
 
       if (!response.ok) {
-        throw new Error(
-          "Ошибка при загрузке заявок"
-        );
-      }
+        throw new Error("Ошибка при загрузке заявок");
+      };
 
       return response.json();
     },
+
     staleTime: 0,
     refetchOnMount: true,
   });
