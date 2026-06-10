@@ -2,12 +2,15 @@ import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 import { useParams } from "react-router";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
 
 import { commentSchema, type CommentFormData } from "../shared/validators/comment.schema";
 import { getUserNameById } from "../shared/lib/getUserNameById.ts";
 import { formatDate } from "../shared/lib/formatDate.ts";
+import { queryKeys } from "../api/queryKeys.ts";
+
 import type { TicketComment } from "../entities/model/types.ts";
-import { useState } from "react";
+
 
 interface UserData {
     activeUser: {
@@ -20,11 +23,10 @@ interface UserData {
 export function CommentsSection( {activeUser} : UserData ) {
     const { ticketId } = useParams();
     const queryClient = useQueryClient();
-
     const [formKey, setFormKey] = useState(0);
 
     const { data: comments, isLoading, isError } = useQuery<TicketComment[]>({
-        queryKey: ["comments", ticketId],
+        queryKey: queryKeys.comments.byTicket(ticketId),
         queryFn: async () => {
             const response = await fetch(`/api/tickets/${ticketId}/comments`);
 
@@ -49,7 +51,6 @@ export function CommentsSection( {activeUser} : UserData ) {
             `/api/tickets/${ticketId}/comments`,
             {
             method: "POST",
-
             headers: {
                 "Content-Type":
                 "application/json",
@@ -72,13 +73,12 @@ export function CommentsSection( {activeUser} : UserData ) {
         },
 
         onSuccess: () => {
-        queryClient.invalidateQueries({
-            queryKey: [ "comments", ticketId ],
-        });
+            queryClient.invalidateQueries({
+                queryKey: queryKeys.comments.byTicket(ticketId),
+            });
 
-        reset();
-        setFormKey(prev => prev + 1);
-
+            reset();
+            setFormKey(prev => prev + 1);
         },
     });
 
