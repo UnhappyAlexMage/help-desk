@@ -1,4 +1,5 @@
 import { Link } from "react-router";
+import toast from "react-hot-toast";
 
 import { useUserRole } from "../hooks/useUserRole.ts";
 import { useUser } from "../providers/RoleContext.tsx";
@@ -35,8 +36,8 @@ export default function Header({ onUserChange } : HeaderProps) {
                         onChange={(e) => { const selecredUser = users?.find((user) => user.id === e.target.value)
                             if(selecredUser) { 
                                 setCurrentUser(selecredUser)
-
-                                 if (onUserChange) {
+                                toast.success(`Здравствуйте, ${selecredUser.fullName}!`)
+                                if (onUserChange) {
                                     onUserChange({
                                         id: selecredUser.id,
                                         role: selecredUser.role,
