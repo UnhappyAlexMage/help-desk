@@ -5,9 +5,12 @@ import { useOutletContext } from "react-router";
 import InfoRow from "../shared/ui/InfoRow";
 import { getUserNameById } from "../shared/lib/getUserNameById";
 import { formatDate } from "../shared/lib/formatDate";
+
 import { CommentsSection } from "../components/CommentsSection";
 import TicketHistory from "../components/TicketHistory";
+
 import { dataTickets } from "../api/constants";
+import { queryKeys } from "../api/queryKeys";
 
 interface OutletContextType {
   activeUser: {
@@ -24,7 +27,7 @@ export default function TicketDetailsPage() {
     const { activeUser } = useOutletContext<OutletContextType>();
 
     const { data: ticket, isLoading, isError } = useQuery({
-        queryKey: ["ticket", ticketId],
+        queryKey: queryKeys.tickets.detail(ticketId),
         queryFn: async () => {
             const response = await fetch(`${dataTickets}/${ticketId}`);
 
