@@ -4,9 +4,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 
-import { createTicketSchema, type CreateTicketFormData } from "../shared/validators/createTicket.schema";
+import { createTicketSchema, type CreateTicketFormData } from "../shared/validators/createTicket.schema.ts";
 import { useUser } from "../providers/RoleContext";
-import { dataTickets } from "../api/constants";
+import { dataTickets } from "../api/constants.ts";
+import { queryKeys } from "../api/queryKeys.ts";
 
 export default function CreateTicketPage() {
     const navigate = useNavigate();
@@ -23,12 +24,12 @@ export default function CreateTicketPage() {
 
         const response = await fetch(dataTickets,
             {
-            method: "POST",
-            headers: {
-                "Content-Type":
-                "application/json",
-            },
-            body: JSON.stringify(requestBody),
+                method: "POST",
+                headers: {
+                    "Content-Type":
+                    "application/json",
+                },
+                body: JSON.stringify(requestBody),
             }
             
         );
@@ -42,13 +43,12 @@ export default function CreateTicketPage() {
         
         onError: (error) => {
             console.error("Ошибка мутации:", error);
-
             toast.error("Не удалось создать заявку!")
         },
 
         onSuccess: () => {
             queryClient.invalidateQueries({
-                queryKey: ["tickets"],
+                queryKey: queryKeys.tickets.all,
             });
 
             toast.success("Заявка успешно создана");
