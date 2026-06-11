@@ -19,6 +19,7 @@ import { dataTickets } from "../api/constants";
 import { queryKeys } from "../api/queryKeys";
 
 export default function TicketsPage() {
+  const navigate = useNavigate();
 
   const [sorting, setSorting] = useState<TicketSorting>({
     field: null,
@@ -35,11 +36,7 @@ export default function TicketsPage() {
 
   const debouncedSearch = useDebounceSearch(filters.search, 1000);
 
-  const handleFilterChange = ( key: keyof TicketFilters, value: string ) => { setFilters((prev) => ({
-      ...prev,
-      [key]: value,
-    }));
-  };
+  const handleFilterChange = ( key: keyof TicketFilters, value: string ) => { setFilters((prev) => ({ ...prev, [key]: value, })) };
 
     const handleSort = (field: SortField) => { setSorting((prev) => {
       if (prev.field !== field) {
@@ -60,6 +57,7 @@ export default function TicketsPage() {
         field: null,
         order: null,
       };
+      
     });
   };
 
@@ -77,9 +75,7 @@ export default function TicketsPage() {
       const params = createTicketSearchParams();
       const response = await fetch(`${dataTickets}?${params}`);
 
-      if (!response.ok) {
-        throw new Error("Ошибка при загрузке заявок");
-      };
+      if (!response.ok) { throw new Error("Ошибка при загрузке заявок") };
 
       return response.json();
     },
@@ -106,8 +102,6 @@ export default function TicketsPage() {
 
     return params.toString();
   };
-
-  const navigate = useNavigate();
 
   return (
     <div className="p-6 max-w-400 mx-auto">
