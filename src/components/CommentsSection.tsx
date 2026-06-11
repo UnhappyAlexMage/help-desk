@@ -63,11 +63,7 @@ export function CommentsSection( {activeUser} : UserData ) {
             }
         );
 
-        if (!response.ok) {
-            throw new Error(
-            "Ошибка добавления комментария"
-            );
-        }
+        if (!response.ok) { throw new Error("Ошибка добавления комментария") };
 
         return response.json();
         },
