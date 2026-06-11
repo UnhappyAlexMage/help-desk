@@ -99,7 +99,6 @@ export default function EditingTicketPage() {
     });
     
     const availableStatuses = ticket ? getAvailableStatuses(ticket.status) : [];
-
     const isAdmin = activeUser?.role === "admin";
 
     if(isLoading) { return <div className="text-black-700">Происходит загрузка выбранной заявки... Нажмите Ctrl+R</div> };

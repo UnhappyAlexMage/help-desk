@@ -36,7 +36,7 @@ export default function CreateTicketPage() {
 
         if (!response.ok) {
             throw new Error("Ошибка создания заявки");
-        }
+        };
 
         return response.json();
         },

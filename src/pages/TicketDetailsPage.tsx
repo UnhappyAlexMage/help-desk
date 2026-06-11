@@ -22,7 +22,6 @@ interface OutletContextType {
 
 export default function TicketDetailsPage() {
     const { ticketId } = useParams();
-
     const navigate = useNavigate();
     const { activeUser } = useOutletContext<OutletContextType>();
 
