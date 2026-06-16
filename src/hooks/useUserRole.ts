@@ -2,10 +2,8 @@ import { useQuery } from '@tanstack/react-query';
 
 import { fetchAllUsers } from '../api/usersApi/fetchAllUsers.ts';
 import type { User } from '../entities/model/types.ts';
-import { useUser } from '../providers/RoleContext.tsx';
 
 export const useUserRole = () => {
-    const { currentUser } = useUser();
 
     return useQuery<User[], Error>({
       queryKey: ["users"],
