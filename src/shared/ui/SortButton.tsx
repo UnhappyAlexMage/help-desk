@@ -5,10 +5,7 @@ type SortButtonProps = {
     onClick: () => void;
 };
 
-export default function SortButton({
-    direction,
-    onClick
-} : SortButtonProps ) {
+export default function SortButton({ direction, onClick } : SortButtonProps ) {
     return (
         <button
             onClick={onClick}
