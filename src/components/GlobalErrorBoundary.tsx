@@ -5,7 +5,7 @@ export default function GlobalErrorBoundary() {
 
     const handleReload = () => window.location.reload();
 
-    let navigate = useNavigate();
+    const navigate = useNavigate();
     const habldeGoHome = (e: React.MouseEvent) => {
         e.preventDefault();
         navigate('/');
