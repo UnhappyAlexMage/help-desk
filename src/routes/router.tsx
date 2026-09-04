@@ -3,13 +3,6 @@ import { createBrowserRouter } from 'react-router';
 import App from '../App';
 import GlobalErrorBoundary from '../components/GlobalErrorBoundary';
 
-const TicketsPage = () => import('../pages/TicketsPage').then(module => ({ Component: module.default }));
-const NotFound = () => import('../components/ErrorPage404').then(module => ({ Component: module.default }));
-const TicketDetailsPage = () => import('../pages/TicketDetailsPage').then(module => ({ Component: module.default }));
-const CreateTicketPage = () => import('../pages/CreateTicketPage').then(module => ({ Component: module.default }));
-const EditingTicketPage = () => import('../pages/EditingTicketPage').then(module => ({ Component: module.default }));
-
-
 const router = createBrowserRouter([
   {
     path: '/',
@@ -18,27 +11,27 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        lazy: TicketsPage,
+        lazy: () => import('../pages/TicketsPage').then(module => ({ Component: module.default })),
         handle: { title: 'Список заявок', showInMenu: true }
       },
       {
         path: 'tickets/:ticketId',
-        lazy: TicketDetailsPage,
+        lazy: () => import('../pages/TicketDetailsPage').then(module => ({ Component: module.default })),
         handle: { title: 'Карточка заявки', showInMenu: false }
       },
       {
         path: 'tickets/create',
-        lazy: CreateTicketPage,
+        lazy: () => import('../pages/CreateTicketPage').then(module => ({ Component: module.default })),
         handle: { title: 'Создание новой заявки', showInMenu: false }
       },
       {
         path: 'tickets/:ticketId/edit',
-        lazy: EditingTicketPage,
+        lazy: () => import('../pages/EditingTicketPage').then(module => ({ Component: module.default })),
         handle: { title: 'Редактирование выбранной заявки', showInMenu: false }
       },
       {
         path: '*',
-        lazy: NotFound,
+        lazy: () => import('../components/ErrorPage404').then(module => ({ Component: module.default })),
         handle: { title: 'Страница не найдена' ,showInMenu: false }
       },
     ]
